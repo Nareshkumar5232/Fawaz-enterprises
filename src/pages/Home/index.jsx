@@ -29,6 +29,18 @@ export default function Home() {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
 
+  const [updateTick, setUpdateTick] = useState(0);
+
+  useEffect(() => {
+    const handleUpdate = () => setUpdateTick((t) => t + 1);
+    window.addEventListener('bytecart_products_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('bytecart_products_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, []);
+
   useEffect(() => {
     async function loadData() {
       setLoading(true);
@@ -48,7 +60,7 @@ export default function Home() {
       }
     }
     loadData();
-  }, []);
+  }, [updateTick]);
 
   const heroProduct = featuredProducts[0];
   const secondaryProducts = featuredProducts.slice(1, 3);

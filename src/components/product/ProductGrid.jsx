@@ -19,9 +19,12 @@ export default function ProductGrid({
   products = [],
   loading = false,
   onResetFilters,
+  onReset,
   columns = 3,
   emptyMessage = 'No products available yet.',
 }) {
+  const handleResetAction = onResetFilters || onReset;
+
   if (loading) {
     return (
       <div
@@ -40,9 +43,9 @@ export default function ProductGrid({
     return (
       <div className="py-24 text-center max-w-md mx-auto space-y-4">
         <h3 className="text-2xl font-serif text-[#24221F]">{emptyMessage}</h3>
-        {onResetFilters && (
+        {handleResetAction && (
           <button
-            onClick={onResetFilters}
+            onClick={handleResetAction}
             className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#24221F] text-xs font-semibold uppercase tracking-wider text-[#24221F] hover:bg-[#24221F] hover:text-white transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />

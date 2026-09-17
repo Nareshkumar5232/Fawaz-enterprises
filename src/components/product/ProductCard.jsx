@@ -8,7 +8,17 @@ import { useWishlist } from '../../context/WishlistContext';
 export default function ProductCard({ product, layout = 'grid' }) {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const isWished = isInWishlist(product.id);
+  const isWished = isInWishlist(product?.id);
+
+  if (!product) return null;
+
+  const imageUrl =
+    product.images?.[0] ||
+    'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80';
+
+  const subtitle = product.material
+    ? product.material.split('&')[0]
+    : product.tagline || product.brand || '';
 
   if (layout === 'editorial-large') {
     return (
@@ -19,10 +29,13 @@ export default function ProductCard({ product, layout = 'grid' }) {
           className="lg:col-span-7 aspect-4/3 sm:aspect-16/10 rounded-2xl overflow-hidden bg-[#EAE4DA] relative block"
         >
           <img
-            src={product.images[0]}
+            src={imageUrl}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-1000 ease-out"
             loading="lazy"
+            onError={(e) => {
+              e.target.src = 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80';
+            }}
           />
           {product.badge && (
             <span className="absolute top-4 left-4 text-[10px] uppercase font-bold tracking-[0.16em] px-3 py-1 bg-[#24221F] text-[#F5F2EC] rounded-full">
@@ -58,9 +71,11 @@ export default function ProductCard({ product, layout = 'grid' }) {
           <p className="text-xs sm:text-sm text-[#77716A] leading-relaxed font-light line-clamp-3">
             {product.description}
           </p>
-          <div className="pt-2 text-sm text-[#77716A]">
-            <span className="font-medium text-[#24221F]">{product.material}</span>
-          </div>
+          {subtitle && (
+            <div className="pt-2 text-sm text-[#77716A]">
+              <span className="font-medium text-[#24221F]">{subtitle}</span>
+            </div>
+          )}
 
           <div className="pt-4 flex items-center justify-between border-t border-[#E2DBD0]/80">
             <span className="text-xl font-bold font-serif text-[#24221F]">
@@ -96,10 +111,13 @@ export default function ProductCard({ product, layout = 'grid' }) {
         className="relative aspect-4/3 sm:aspect-5/4 rounded-2xl overflow-hidden bg-[#EAE4DA]/50 block"
       >
         <img
-          src={product.images[0]}
+          src={imageUrl}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
           loading="lazy"
+          onError={(e) => {
+            e.target.src = 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80';
+          }}
         />
         {product.badge && (
           <span className="absolute top-3 left-3 text-[9px] uppercase font-semibold tracking-[0.14em] px-2.5 py-0.5 bg-[#24221F]/90 backdrop-blur-xs text-[#F5F2EC] rounded-full">
@@ -149,9 +167,11 @@ export default function ProductCard({ product, layout = 'grid' }) {
           <h3 className="text-base sm:text-lg font-serif text-[#24221F] group-hover:text-[#A66A4C] transition-colors leading-snug">
             <Link to={`/products/${product.slug}`}>{product.name}</Link>
           </h3>
-          <p className="text-[11px] text-[#77716A] line-clamp-1">
-            {product.material.split('&')[0]}
-          </p>
+          {subtitle && (
+            <p className="text-[11px] text-[#77716A] line-clamp-1">
+              {subtitle}
+            </p>
+          )}
         </div>
 
         <span className="text-sm font-semibold text-[#24221F] font-serif shrink-0 ml-2">

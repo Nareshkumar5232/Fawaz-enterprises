@@ -39,6 +39,18 @@ export default function Products() {
     loadCategories();
   }, []);
 
+  const [updateTick, setUpdateTick] = useState(0);
+
+  useEffect(() => {
+    const handleUpdate = () => setUpdateTick((t) => t + 1);
+    window.addEventListener('bytecart_products_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('bytecart_products_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -73,7 +85,7 @@ export default function Products() {
       isMounted = false;
       clearTimeout(timer);
     };
-  }, [selectedCategory, searchQuery, sortBy, priceRange]);
+  }, [selectedCategory, searchQuery, sortBy, priceRange, updateTick]);
 
   const handleCategorySelect = (catSlug) => {
     setSelectedCategory(catSlug);

@@ -227,8 +227,8 @@ export default function ProductDetail() {
           {/* Material & Dimensions Summary */}
           <div className="border-y border-[#E2DBD0] py-4 space-y-2.5 text-xs">
             <div className="flex justify-between">
-              <span className="text-[#77716A]">Build Quality</span>
-              <span className="text-[#24221F] font-medium">{product.material}</span>
+              <span className="text-[#77716A]">Build Quality / Processor</span>
+              <span className="text-[#24221F] font-medium">{product.material || product.specs?.processor || product.brand || 'Flagship Grade'}</span>
             </div>
             {product.finish && (
               <div className="flex justify-between">
@@ -244,7 +244,7 @@ export default function ProductDetail() {
             )}
             <div className="flex justify-between">
               <span className="text-[#77716A]">Availability</span>
-              <span className="text-[#A66A4C] font-semibold">{product.availability}</span>
+              <span className="text-[#A66A4C] font-semibold">{product.inStock !== false ? 'In Stock (Ready to Ship)' : (product.availability || 'Out of Stock')}</span>
             </div>
           </div>
 

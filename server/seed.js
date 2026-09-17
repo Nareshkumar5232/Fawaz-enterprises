@@ -51,6 +51,39 @@ async function seed() {
     }
   }
 
+  // 3. Products Initialization and demo sync
+  try {
+    const productsDataPath = path.join(__dirname, '..', 'src', 'data', 'productsData.js');
+    if (fs.existsSync(productsDataPath)) {
+      let content = fs.readFileSync(productsDataPath, 'utf8');
+      const match = content.match(/export const productsData = ([\s\S]*?);\s*$/);
+      if (match) {
+        const prods = eval(match[1]);
+        if (Array.isArray(prods) && prods.length > 0) {
+          if (!data.products) data.products = [];
+          let addedCount = 0;
+          for (const p of prods) {
+            const exists = data.products.some(ep => ep.id === p.id || ep.slug === p.slug);
+            if (!exists) {
+              data.products.push({
+                ...p,
+                createdAt: p.createdAt || new Date().toISOString(),
+                updatedAt: p.updatedAt || new Date().toISOString()
+              });
+              addedCount++;
+              modified = true;
+            }
+          }
+          if (addedCount > 0) {
+            console.log(`✓ Seeded ${addedCount} new demo products into unified database.`);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Failed to import products:', err);
+  }
+
   if (modified) {
     db.save();
     console.log('✓ Database initialization complete.');
