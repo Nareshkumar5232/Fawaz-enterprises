@@ -12,6 +12,7 @@ export default function Cart() {
     subtotal,
     deliveryCharge,
     discount,
+    tax,
     total,
     appliedPromo,
     applyPromoCode,

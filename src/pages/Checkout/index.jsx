@@ -28,6 +28,7 @@ export default function Checkout() {
     subtotal,
     deliveryCharge,
     discount,
+    tax,
     total,
     clearCart,
     directBuyItem,
