@@ -62,14 +62,14 @@ export default function AdminLayout() {
         <div>
           <div className="h-20 px-6 border-b border-[#3D3A36] flex items-center justify-between">
             <Link to="/admin" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#A66A4C] flex items-center justify-center text-white font-serif font-bold text-sm">
-                B
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-sm">
+                F
               </div>
               <div>
-                <span className="font-serif text-base font-bold tracking-tight text-[#F5F2EC]">
-                  BYTECART
+                <span className="font-black text-base tracking-tight text-white uppercase">
+                  FAWAZ
                 </span>
-                <span className="block text-[9px] uppercase tracking-[0.2em] text-[#A66A4C] font-semibold">
+                <span className="block text-[9px] uppercase tracking-[0.2em] text-blue-400 font-semibold">
                   Administration
                 </span>
               </div>
@@ -157,9 +157,9 @@ export default function AdminLayout() {
               <Menu className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#A66A4C]" />
-              <span className="text-xs font-semibold text-[#77716A] uppercase tracking-wider hidden sm:inline">
-                Bytecart Enterprise Control
+              <ShieldCheck className="w-4 h-4 text-blue-600" />
+              <span className="text-xs font-semibold text-neutral-600 uppercase tracking-wider hidden sm:inline">
+                Fawaz Enterprises Management Console
               </span>
             </div>
           </div>

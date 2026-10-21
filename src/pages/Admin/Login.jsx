@@ -42,14 +42,14 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-[#24221F] flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-[#F5F2EC]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <div className="w-12 h-12 rounded-2xl bg-[#A66A4C] mx-auto flex items-center justify-center text-white font-serif font-bold text-xl shadow-lg">
-          B
+        <div className="w-12 h-12 rounded-2xl bg-blue-600 mx-auto flex items-center justify-center text-white font-black text-xl shadow-lg">
+          F
         </div>
-        <h2 className="font-serif text-3xl font-bold tracking-tight text-white">
-          BYTECART Administrative Suite
+        <h2 className="text-3xl font-black tracking-tight text-white uppercase">
+          FAWAZ ENTERPRISES
         </h2>
-        <p className="text-xs uppercase tracking-[0.2em] text-[#A66A4C] font-semibold">
-          Secure Administrator Sign In
+        <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-semibold">
+          Administrative & Management Suite
         </p>
       </div>
 

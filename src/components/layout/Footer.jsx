@@ -1,47 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
   Mail,
   Phone,
   MapPin,
   ArrowUpRight,
-} from "lucide-react";
-import { cn } from "../../lib/utils";
-import Logo from "../common/Logo";
+  ShieldCheck,
+  CheckCircle2,
+  FileText,
+} from 'lucide-react';
+import Logo from '../common/Logo';
 
 /* =========================================================
-   BYTECART TEXT HOVER EFFECT
+   FAWAZ ENTERPRISES TEXT HOVER EFFECT
    ========================================================= */
 
-export const TextHoverEffect = ({
-  text,
-  duration = 0.15,
-  className,
-}) => {
+export const TextHoverEffect = ({ text = "FAWAZ", duration = 0.15, className }) => {
   const svgRef = useRef(null);
-
-  const [cursor, setCursor] = useState({
-    x: 0,
-    y: 0,
-  });
-
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
-
-  const [maskPosition, setMaskPosition] = useState({
-    cx: "50%",
-    cy: "50%",
-  });
+  const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
   useEffect(() => {
     if (svgRef.current && cursor.x !== null && cursor.y !== null) {
       const svgRect = svgRef.current.getBoundingClientRect();
-
-      const cxPercentage =
-        ((cursor.x - svgRect.left) / svgRect.width) * 100;
-
-      const cyPercentage =
-        ((cursor.y - svgRect.top) / svgRect.height) * 100;
+      const cxPercentage = ((cursor.x - svgRect.left) / svgRect.width) * 100;
+      const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100;
 
       setMaskPosition({
         cx: `${cxPercentage}%`,
@@ -55,25 +40,16 @@ export const TextHoverEffect = ({
       ref={svgRef}
       width="100%"
       height="100%"
-      viewBox="0 0 400 90"
+      viewBox="0 0 500 90"
       xmlns="http://www.w3.org/2000/svg"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onMouseMove={(e) =>
-        setCursor({
-          x: e.clientX,
-          y: e.clientY,
-        })
-      }
-      className={cn(
-        "select-none uppercase cursor-pointer w-full max-w-5xl mx-auto",
-        className
-      )}
+      onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
+      className={`select-none uppercase cursor-pointer w-full max-w-5xl mx-auto ${className || ''}`}
     >
       <defs>
-        {/* Warm tech-inspired gradient */}
         <linearGradient
-          id="bytecartTextGradient"
+          id="fawazTextGradient"
           gradientUnits="userSpaceOnUse"
           x1="0%"
           y1="0%"
@@ -82,113 +58,71 @@ export const TextHoverEffect = ({
         >
           {hovered && (
             <>
-              <stop offset="0%" stopColor="#C08A6A" />
-              <stop offset="35%" stopColor="#A66A4C" />
-              <stop offset="65%" stopColor="#D2B49A" />
-              <stop offset="100%" stopColor="#8B5E48" />
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="50%" stopColor="#818cf8" />
+              <stop offset="100%" stopColor="#c084fc" />
             </>
           )}
         </linearGradient>
 
-        {/* Cursor reveal */}
         <motion.radialGradient
-          id="bytecartRevealMask"
+          id="fawazRevealMask"
           gradientUnits="userSpaceOnUse"
-          r="25%"
-          initial={{
-            cx: "50%",
-            cy: "50%",
-          }}
+          r="28%"
+          initial={{ cx: "50%", cy: "50%" }}
           animate={maskPosition}
-          transition={{
-            duration: duration ?? 0.15,
-            ease: "easeOut",
-          }}
+          transition={{ duration: duration ?? 0.15, ease: "easeOut" }}
         >
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
         </motion.radialGradient>
 
-        <mask id="bytecartTextMask">
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            fill="url(#bytecartRevealMask)"
-          />
+        <mask id="fawazTextMask">
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#fawazRevealMask)" />
         </mask>
       </defs>
 
-      {/* Subtle outline while hovering */}
+      {/* Subtle outline base */}
       <text
         x="50%"
         y="58%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.5"
-        letterSpacing="0.12em"
-        className="
-          fill-transparent
-          stroke-[#F5F2EC]
-          font-sans
-          text-5xl
-          font-bold
-        "
-        style={{
-          opacity: hovered ? 0.3 : 0.08,
-        }}
+        strokeWidth="0.6"
+        letterSpacing="0.14em"
+        className="fill-transparent stroke-neutral-700 font-sans text-5xl font-extrabold"
+        style={{ opacity: hovered ? 0.35 : 0.15 }}
       >
         {text}
       </text>
 
-      {/* Main animated outline */}
+      {/* Animated stroke outline */}
       <motion.text
         x="50%"
         y="58%"
         textAnchor="middle"
         dominantBaseline="middle"
-        strokeWidth="0.5"
-        letterSpacing="0.12em"
-        className="
-          fill-transparent
-          stroke-[#A66A4C]
-          font-sans
-          text-5xl
-          font-bold
-        "
-        initial={{
-          strokeDashoffset: 1000,
-          strokeDasharray: 1000,
-        }}
-        animate={{
-          strokeDashoffset: 0,
-          strokeDasharray: 1000,
-        }}
-        transition={{
-          duration: 3,
-          ease: "easeInOut",
-        }}
+        strokeWidth="0.6"
+        letterSpacing="0.14em"
+        className="fill-transparent stroke-neutral-500 font-sans text-5xl font-extrabold"
+        initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
+        animate={{ strokeDashoffset: 0, strokeDasharray: 1000 }}
+        transition={{ duration: 2.5, ease: "easeInOut" }}
       >
         {text}
       </motion.text>
 
-      {/* Cursor-following color reveal */}
+      {/* Cursor-following reveal */}
       <text
         x="50%"
         y="58%"
         textAnchor="middle"
         dominantBaseline="middle"
-        stroke="url(#bytecartTextGradient)"
-        strokeWidth="0.5"
-        letterSpacing="0.12em"
-        mask="url(#bytecartTextMask)"
-        className="
-          fill-transparent
-          font-sans
-          text-5xl
-          font-bold
-        "
+        stroke="url(#fawazTextGradient)"
+        strokeWidth="0.8"
+        letterSpacing="0.14em"
+        mask="url(#fawazTextMask)"
+        className="fill-transparent font-sans text-5xl font-extrabold"
       >
         {text}
       </text>
@@ -196,465 +130,183 @@ export const TextHoverEffect = ({
   );
 };
 
-/* =========================================================
-   FOOTER BACKGROUND
-   ========================================================= */
-
-export const FooterBackgroundGradient = () => {
-  return (
-    <div
-      className="absolute inset-0 z-0 pointer-events-none"
-      style={{
-        background: `
-          radial-gradient(
-            80% 60% at 50% 0%,
-            rgba(166, 106, 76, 0.14) 0%,
-            rgba(166, 106, 76, 0.04) 40%,
-            transparent 70%
-          )
-        `,
-      }}
-    />
-  );
-};
-
-/* =========================================================
-   BYTECART FOOTER
-   ========================================================= */
-
-export function HoverFooter() {
-  const footerLinks = [
-    {
-      title: "BYTECART Categories",
-      links: [
-        { label: "Laptops", href: "/products?category=laptops" },
-        { label: "Desktops", href: "/products?category=desktops" },
-        { label: "Monitors", href: "/products?category=monitors" },
-        { label: "PC Components", href: "/products?category=pc-components" },
-        { label: "Accessories", href: "/products?category=accessories" },
-        { label: "Gaming", href: "/products?category=gaming" },
-        { label: "Storage", href: "/products?category=storage" },
-        { label: "Networking", href: "/products?category=networking" },
-      ],
-    },
-    {
-      title: "Customer Support",
-      links: [
-        { label: "FAQs", href: "/contact?subject=FAQs" },
-        { label: "Shipping", href: "/contact?subject=Shipping" },
-        { label: "Returns", href: "/contact?subject=Returns" },
-        { label: "Warranty", href: "/contact?subject=Warranty" },
-        { label: "Contact Us", href: "/contact" },
-      ],
-    },
-    {
-      title: "Company",
-      links: [
-        { label: "About Us", href: "/about" },
-        { label: "My Orders", href: "/my-orders" },
-        { label: "Wishlist", href: "/wishlist" },
-        { label: "Account", href: "/account" },
-        { label: "Admin Portal", href: "/admin/login" },
-      ],
-    },
+export default function Footer() {
+  const categoryLinks = [
+    { label: "Laptops & Notebooks", href: "/products?category=laptops" },
+    { label: "Desktop Workstations", href: "/products?category=desktops" },
+    { label: "Displays & Monitors", href: "/products?category=monitors" },
+    { label: "PC Components & Upgrades", href: "/products?category=pc-components" },
+    { label: "Studio Audio & Headsets", href: "/products?category=audio" },
+    { label: "Keyboards & Peripherals", href: "/products?category=keyboards-mouse" },
+    { label: "Storage & NVMe SSDs", href: "/products?category=storage" },
+    { label: "Enterprise Networking", href: "/products?category=networking" },
   ];
 
-  const contactInfo = [
-    {
-      icon: <Mail size={15} />,
-      text: "bytecartpvtltd@gmail.com",
-      href: "mailto:bytecartpvtltd@gmail.com",
-    },
-    {
-      icon: <Phone size={15} />,
-      text: "044 3154 4571",
-      href: "tel:+914431544571",
-    },
-    {
-      icon: <MapPin size={15} />,
-      text: "Anna Nagar, Chennai – 600040",
-      href: "/contact",
-    },
+  const quickLinks = [
+    { label: "All Products", href: "/products" },
+    { label: "Categories", href: "/categories" },
+    { label: "About Fawaz Enterprises", href: "/about" },
+    { label: "Contact & Procurement", href: "/contact" },
+    { label: "Order History", href: "/my-orders" },
+    { label: "Wishlist", href: "/wishlist" },
+    { label: "Admin Suite", href: "/admin/login" },
+  ];
+
+  const legalLinks = [
+    { label: "Terms of Service", href: "/contact?subject=Terms" },
+    { label: "Privacy Policy", href: "/contact?subject=Privacy" },
+    { label: "Shipping Policy", href: "/contact?subject=Shipping" },
+    { label: "Warranty & RMA", href: "/contact?subject=Warranty" },
+    { label: "GST Compliance & Invoicing", href: "/contact?subject=GST" },
   ];
 
   return (
-    <footer
-      className="
-        relative
-        overflow-hidden
-        bg-[#24221F]
-        text-[#F5F2EC]
-        rounded-3xl
-        mx-3
-        sm:mx-6
-        lg:mx-8
-        mt-16
-        mb-6
-        border
-        border-[#3A3632]
-      "
-    >
-      {/* Background Glow */}
-      <FooterBackgroundGradient />
-
-      <div
-        className="
-          relative
-          z-10
-          max-w-7xl
-          mx-auto
-          px-6
-          py-12
-          md:px-10
-          md:py-14
-          lg:px-12
-          space-y-12
-        "
-      >
-        {/* =================================================
-            TOP SECTION: BRAND & LINKS
-            ================================================= */}
-
-        <div
-          className="
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            lg:grid-cols-12
-            gap-10
-            lg:gap-8
-            items-start
-          "
-        >
-          {/* BRAND (Span 4) */}
-          <div className="lg:col-span-4 flex flex-col space-y-4">
+    <footer className="bg-[#0A0A0C] text-neutral-300 pt-16 pb-10 border-t border-neutral-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        {/* TOP SECTION: BRAND + COLUMNS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+          {/* Brand & Client Details (Span 4) */}
+          <div className="lg:col-span-4 space-y-5">
             <Logo light={true} />
-
-            <p
-              className="
-                max-w-sm
-                text-xs
-                leading-relaxed
-                text-[#BDB6AF]
-                font-light
-              "
-            >
-              Thoughtfully selected electronics for contemporary spaces, high performance, and timeless design.
+            <p className="text-xs text-neutral-400 leading-relaxed font-normal max-w-sm">
+              Fawaz Enterprises delivers certified enterprise computing solutions, professional workstations, studio audio equipment, and genuine computer accessories tailored for creators and tech enterprises.
             </p>
 
-            <Link
-              to="/products"
-              className="
-                inline-flex
-                items-center
-                gap-1.5
-                w-fit
-                text-xs
-                font-medium
-                text-[#F5F2EC]
-                group
-                border-b
-                border-[#6F665F]
-                pb-0.5
-                transition-all
-                duration-300
-                hover:border-[#C08A6A]
-                pt-1
-              "
-            >
-              <span>Explore the collection</span>
-              <ArrowUpRight
-                size={13}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:translate-x-0.5
-                  group-hover:-translate-y-0.5
-                  text-[#C08A6A]
-                "
-              />
-            </Link>
+            {/* Statutory Details Box */}
+            <div className="p-4 rounded-xl bg-neutral-900/80 border border-neutral-800 space-y-2 text-xs">
+              <div className="flex items-center justify-between pb-2 border-b border-neutral-800/80">
+                <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">Business Entity</span>
+                <span className="text-white font-medium">Fawaz Enterprises</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-neutral-400">GSTIN:</span>
+                <span className="text-neutral-200 font-mono text-[11px] font-semibold">33AEYPF9750J1ZV</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-neutral-400">PAN:</span>
+                <span className="text-neutral-200 font-mono text-[11px] font-semibold">AEYPF9750J</span>
+              </div>
+              <div className="pt-1 flex items-center gap-1.5 text-[10px] text-emerald-400 font-medium">
+                <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                <span>Verified GST Registered Business</span>
+              </div>
+            </div>
           </div>
 
-          {/* FOOTER LINK GROUPS (Span 2 + Span 2) */}
-          {footerLinks.map((section, idx) => (
-            <div
-              key={section.title}
-              className={idx === 0 ? "lg:col-span-2" : "lg:col-span-2"}
-            >
-              <h4
-                className="
-                  text-[11px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-[#C08A6A]
-                  mb-4
-                "
-              >
-                {section.title}
-              </h4>
-
-              <ul className="space-y-2.5">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      to={link.href}
-                      className="
-                        group
-                        inline-flex
-                        items-center
-                        gap-1.5
-                        text-xs
-                        text-[#C5BEB7]
-                        transition-colors
-                        duration-300
-                        hover:text-[#F5F2EC]
-                      "
-                    >
-                      <span>{link.label}</span>
-                      <ArrowUpRight
-                        size={11}
-                        className="
-                          opacity-0
-                          -translate-x-1
-                          translate-y-1
-                          transition-all
-                          duration-300
-                          group-hover:opacity-100
-                          group-hover:translate-x-0
-                          group-hover:translate-y-0
-                          text-[#C08A6A]
-                        "
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          {/* CONTACT DETAILS (Span 2) */}
-          <div className="lg:col-span-2">
-            <h4
-              className="
-                text-[11px]
-                font-semibold
-                uppercase
-                tracking-[0.18em]
-                text-[#C08A6A]
-                mb-4
-              "
-            >
-              Get in Touch
+          {/* Categories (Span 3) */}
+          <div className="lg:col-span-3">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">
+              Hardware Categories
             </h4>
-
-            <ul className="space-y-3">
-              {contactInfo.map((item, index) => (
-                <li key={index}>
-                  <a
-                    href={item.href}
-                    className="
-                      flex
-                      items-center
-                      gap-2.5
-                      group
-                    "
+            <ul className="space-y-2.5 text-xs text-neutral-400">
+              {categoryLinks.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    to={item.href}
+                    className="hover:text-white transition-colors duration-200 inline-flex items-center gap-1.5 group"
                   >
-                    <span
-                      className="
-                        flex
-                        items-center
-                        justify-center
-                        text-[#C08A6A]
-                        transition-transform
-                        duration-300
-                        group-hover:scale-110
-                        shrink-0
-                      "
-                    >
-                      {item.icon}
-                    </span>
-
-                    <span
-                      className="
-                        text-xs
-                        text-[#C5BEB7]
-                        transition-colors
-                        duration-300
-                        group-hover:text-[#F5F2EC]
-                        truncate
-                      "
-                    >
-                      {item.text}
-                    </span>
-                  </a>
+                    <span>{item.label}</span>
+                    <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-neutral-300" />
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
 
-        {/* =================================================
-            REGISTERED OFFICE & CONSULTATION
-            ================================================= */}
+          {/* Quick & Legal (Span 2) */}
+          <div className="lg:col-span-2">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">
+              Explore & Support
+            </h4>
+            <ul className="space-y-2.5 text-xs text-neutral-400">
+              {quickLinks.map((item) => (
+                <li key={item.label}>
+                  <Link to={item.href} className="hover:text-white transition-colors duration-200">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div
-          className="
-            border-t
-            border-[#3A3632]
-            pt-6
-          "
-        >
-          <div
-            className="
-              flex
-              flex-col
-              md:flex-row
-              md:items-center
-              md:justify-between
-              gap-4
-            "
-          >
-            <div className="space-y-1">
-              <p
-                className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-[#C08A6A]
-                "
+          {/* Contact Details (Span 3) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4">
+              Contact Fawaz Enterprises
+            </h4>
+
+            <ul className="space-y-3 text-xs text-neutral-400">
+              <li className="flex items-start gap-2.5">
+                <Phone className="w-4 h-4 text-neutral-300 shrink-0 mt-0.5" />
+                <div>
+                  <span className="block text-[11px] text-neutral-500 uppercase tracking-wider">Direct Phones</span>
+                  <div className="flex flex-col gap-0.5 mt-0.5">
+                    <a href="tel:9976895663" className="text-neutral-200 hover:text-white font-medium transition-colors">
+                      +91 9976895663
+                    </a>
+                    <a href="tel:6369421249" className="text-neutral-200 hover:text-white font-medium transition-colors">
+                      +91 6369421249
+                    </a>
+                  </div>
+                </div>
+              </li>
+
+              <li className="flex items-start gap-2.5">
+                <Mail className="w-4 h-4 text-neutral-300 shrink-0 mt-0.5" />
+                <div>
+                  <span className="block text-[11px] text-neutral-500 uppercase tracking-wider">Email Inquiries</span>
+                  <a
+                    href="mailto:Fayasmd.md@gmail.com"
+                    className="text-neutral-200 hover:text-white transition-colors block mt-0.5 truncate"
+                  >
+                    Fayasmd.md@gmail.com
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex items-start gap-2.5">
+                <ShieldCheck className="w-4 h-4 text-neutral-300 shrink-0 mt-0.5" />
+                <div>
+                  <span className="block text-[11px] text-neutral-500 uppercase tracking-wider">Customer Support</span>
+                  <a
+                    href="mailto:support@fawazenterprises.com"
+                    className="text-neutral-200 hover:text-white transition-colors block mt-0.5 truncate"
+                  >
+                    support@fawazenterprises.com
+                  </a>
+                </div>
+              </li>
+            </ul>
+
+            <div className="pt-2">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-semibold transition-colors"
               >
-                Registered Office
-              </p>
-
-              <p
-                className="
-                  text-xs
-                  leading-relaxed
-                  text-[#AFA79F]
-                "
-              >
-                Flat No. 2, Plot No. 1051, I Block, 35th Street, 18th Main Road, Anna Nagar, Chennai – 600040
-              </p>
+                Send Direct Message
+              </Link>
             </div>
-
-            <Link
-              to="/contact"
-              className="
-                group
-                inline-flex
-                items-center
-                gap-1.5
-                w-fit
-                text-xs
-                text-[#F5F2EC]
-                border-b
-                border-[#6F665F]
-                pb-0.5
-                transition-all
-                duration-300
-                hover:border-[#C08A6A]
-                shrink-0
-              "
-            >
-              <span>Contact customer support</span>
-              <ArrowUpRight
-                size={13}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:translate-x-0.5
-                  group-hover:-translate-y-0.5
-                  text-[#C08A6A]
-                "
-              />
-            </Link>
           </div>
         </div>
 
-        {/* =================================================
-            BOTTOM COPYRIGHT & LEGAL
-            ================================================= */}
+        {/* BOTTOM METRICS & COMPLIANCE BAR */}
+        <div className="pt-8 border-t border-neutral-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
+          <p>© {new Date().getFullYear()} Fawaz Enterprises. All rights reserved.</p>
 
-        <div
-          className="
-            border-t
-            border-[#3A3632]
-            pt-6
-            flex
-            flex-col
-            sm:flex-row
-            items-center
-            justify-between
-            gap-4
-            text-[11px]
-            text-[#8F8983]
-          "
-        >
-          <p>
-            © {new Date().getFullYear()} BYTECART PRIVATE LIMITED. All rights reserved.
-          </p>
-
-          <div className="flex items-center gap-5">
-            <Link
-              to="/about"
-              className="
-                transition-colors
-                duration-300
-                hover:text-[#F5F2EC]
-              "
-            >
-              About
-            </Link>
-
-            <Link
-              to="/contact"
-              className="
-                transition-colors
-                duration-300
-                hover:text-[#F5F2EC]
-              "
-            >
-              Privacy & Procurement
-            </Link>
-
-            <Link
-              to="/contact"
-              className="
-                transition-colors
-                duration-300
-                hover:text-[#F5F2EC]
-              "
-            >
-              Terms of Service
-            </Link>
+          <div className="flex flex-wrap items-center gap-6 text-[11px] text-neutral-400">
+            {legalLinks.map((item) => (
+              <Link key={item.label} to={item.href} className="hover:text-neutral-200 transition-colors">
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* =================================================
-            LARGE BYTECART HOVER TEXT (CLEANLY SCALED)
-            ================================================= */}
-
-        <div
-          className="
-            pt-4
-            flex
-            items-center
-            justify-center
-            w-full
-            overflow-hidden
-          "
-        >
-          <TextHoverEffect
-            text="BYTECART"
-            duration={0.15}
-          />
+        {/* LARGE HOVER OUTLINE LOGO */}
+        <div className="pt-2 flex items-center justify-center w-full overflow-hidden">
+          <TextHoverEffect text="FAWAZ ENTERPRISES" duration={0.15} />
         </div>
       </div>
     </footer>
   );
 }
-
-export default HoverFooter;

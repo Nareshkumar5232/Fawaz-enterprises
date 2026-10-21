@@ -38,14 +38,14 @@ export default function OrderSuccess() {
           <CheckCircle2 className="w-8 h-8 stroke-[1.8]" />
         </div>
 
-        <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#A66A4C] block">
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 block">
           Order Confirmed
         </span>
-        <h1 className="text-3xl sm:text-5xl font-serif text-[#24221F] tracking-tight">
-          Thank you for choosing Bytecart.
+        <h1 className="text-3xl sm:text-5xl font-black text-neutral-900 tracking-tight">
+          Thank you for choosing Fawaz Enterprises.
         </h1>
-        <p className="text-xs sm:text-sm text-[#77716A] max-w-lg mx-auto leading-relaxed font-light">
-          Your order has been recorded. Our Chennai office has begun coordinating quality inspection and delivery dispatch.
+        <p className="text-xs sm:text-sm text-neutral-600 max-w-lg mx-auto leading-relaxed">
+          Your order has been recorded. Our team has begun hardware inspection and express courier dispatch. For any queries, reach us at +91 9976895663 / 6369421249.
         </p>
       </div>
 

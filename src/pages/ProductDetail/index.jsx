@@ -9,22 +9,23 @@ import {
   ShieldCheck,
   Truck,
   Heart,
-  Sparkles,
-  Compass
+  CheckCircle2,
 } from 'lucide-react';
 import { productService } from '../../services/productService';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useToast } from '../../context/ToastContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatCurrency } from '../../utils/formatters';
 import ProductCard from '../../components/product/ProductCard';
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const { addToCart, setDirectBuyItem } = useCart();
+  const { addToCart, setDirectBuyItem, openCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToast } = useToast();
+  const { isAuthenticated } = useAuth();
 
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -72,13 +73,19 @@ export default function ProductDetail() {
   const handleAddToCart = () => {
     if (product) {
       addToCart(product, quantity, true);
+      openCart();
     }
   };
 
   const handleBuyNow = () => {
     if (product) {
-      setDirectBuyItem({ product, quantity });
-      navigate('/checkout');
+      addToCart(product, quantity);
+      if (!isAuthenticated) {
+        addToast('Please sign in or create an account to complete your purchase.', 'info');
+        navigate('/login', { state: { from: '/checkout' } });
+      } else {
+        navigate('/checkout');
+      }
     }
   };
 
@@ -86,12 +93,12 @@ export default function ProductDetail() {
     return (
       <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 animate-pulse">
-          <div className="lg:col-span-7 aspect-4/3 bg-[#E8E0D5] rounded-3xl" />
+          <div className="lg:col-span-7 aspect-4/3 bg-neutral-100 rounded-3xl" />
           <div className="lg:col-span-5 space-y-6">
-            <div className="h-4 w-24 bg-[#E8E0D5] rounded" />
-            <div className="h-10 w-3/4 bg-[#E8E0D5] rounded" />
-            <div className="h-6 w-32 bg-[#E8E0D5] rounded" />
-            <div className="h-24 bg-[#E8E0D5] rounded-2xl" />
+            <div className="h-4 w-24 bg-neutral-100 rounded" />
+            <div className="h-10 w-3/4 bg-neutral-100 rounded" />
+            <div className="h-6 w-32 bg-neutral-100 rounded" />
+            <div className="h-24 bg-neutral-100 rounded-2xl" />
           </div>
         </div>
       </div>
@@ -101,41 +108,42 @@ export default function ProductDetail() {
   if (!product) {
     return (
       <div className="pt-36 pb-24 max-w-md mx-auto px-4 text-center space-y-4">
-        <h2 className="text-2xl font-serif text-[#24221F]">Product Not Found</h2>
-        <p className="text-xs text-[#77716A]">
-          The requested product could not be found in our current catalogue.
+        <h2 className="text-2xl font-black text-neutral-900">Product Not Found</h2>
+        <p className="text-xs text-neutral-500">
+          The requested product could not be found in our current hardware catalogue.
         </p>
         <Link
           to="/products"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#24221F] text-white text-xs font-semibold uppercase tracking-wider"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900 text-white text-xs font-semibold uppercase tracking-wider hover:bg-neutral-800 transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Return to Collection</span>
+          <span>Return to Catalog</span>
         </Link>
       </div>
     );
   }
 
   const isWished = isInWishlist(product.id);
+  const images = product.images && product.images.length > 0 ? product.images : [product.image];
 
   return (
-    <div className="pt-28 md:pt-36 pb-28 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 space-y-20">
+    <div className="pt-28 md:pt-36 pb-28 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 space-y-16">
       {/* Top Breadcrumb */}
-      <div className="flex items-center justify-between text-xs text-[#77716A] border-b border-[#E2DBD0] pb-4">
+      <div className="flex items-center justify-between text-xs text-neutral-500 border-b border-neutral-200 pb-4">
         <div className="flex items-center gap-2">
-          <Link to="/products" className="hover:text-[#24221F] flex items-center gap-1">
+          <Link to="/products" className="hover:text-neutral-900 flex items-center gap-1">
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Collection</span>
           </Link>
           <span>/</span>
           <Link
             to={`/products?category=${product.categorySlug}`}
-            className="hover:text-[#24221F]"
+            className="hover:text-neutral-900"
           >
-            {product.categoryName}
+            {product.categoryName || product.category}
           </Link>
           <span className="hidden sm:inline">/</span>
-          <span className="hidden sm:inline text-[#24221F] font-medium truncate max-w-xs">
+          <span className="hidden sm:inline text-neutral-900 font-medium truncate max-w-xs">
             {product.name}
           </span>
         </div>
@@ -145,60 +153,62 @@ export default function ProductDetail() {
             onClick={() => toggleWishlist(product)}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border transition-all cursor-pointer ${
               isWished
-                ? 'border-[#A66A4C] bg-[#A66A4C] text-white'
-                : 'border-[#E2DBD0] text-[#77716A] hover:text-[#24221F] hover:border-[#24221F]'
+                ? 'border-red-500 bg-red-50 text-red-600'
+                : 'border-neutral-200 text-neutral-600 hover:text-black hover:border-black'
             }`}
           >
-            <Heart className={`w-3.5 h-3.5 ${isWished ? 'fill-current' : ''}`} />
-            <span className="text-[10px] uppercase tracking-wider font-semibold">
+            <Heart className={`w-3.5 h-3.5 ${isWished ? 'fill-current text-red-500' : ''}`} />
+            <span className="text-[10px] uppercase tracking-wider font-bold">
               {isWished ? 'Saved' : 'Wishlist'}
             </span>
           </button>
 
           <button
             onClick={handleShare}
-            className="flex items-center gap-1.5 p-1.5 text-[#77716A] hover:text-[#24221F] transition-colors"
+            className="flex items-center gap-1.5 p-2 rounded-full hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900 transition-colors"
             title="Share product"
+            aria-label="Share"
           >
-            <Share2 className="w-3.5 h-3.5" />
+            <Share2 className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Main Split-Screen Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        {/* Left: Large Dominant Gallery (Span 7) */}
+        {/* Left: Gallery */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="aspect-4/3 sm:aspect-16/11 rounded-3xl overflow-hidden bg-[#E8E0D5] relative border border-[#E2DBD0]">
+          <div className="aspect-square sm:aspect-16/11 rounded-3xl overflow-hidden bg-neutral-100 relative border border-neutral-200 flex items-center justify-center p-6">
             <img
-              src={product.images[selectedImageIndex] || product.images[0]}
+              src={images[selectedImageIndex] || images[0]}
               alt={product.name}
-              className="w-full h-full object-cover transition-all duration-700"
+              className="w-full h-full object-contain transition-all duration-500 drop-shadow-md"
             />
             {product.badge && (
-              <span className="absolute top-6 left-6 text-[10px] font-bold uppercase tracking-[0.16em] px-3.5 py-1 rounded-full bg-[#24221F] text-[#F4F0E8]">
+              <span className="absolute top-6 left-6 text-[10px] font-bold uppercase tracking-[0.16em] px-3.5 py-1 rounded-full bg-neutral-900 text-white">
                 {product.badge}
               </span>
             )}
           </div>
 
           {/* Thumbnail Strip */}
-          {product.images.length > 1 && (
+          {images.length > 1 && (
             <div className="flex items-center gap-3">
-              {product.images.map((img, idx) => (
+              {images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImageIndex(idx)}
-                  className={`w-20 h-20 rounded-2xl overflow-hidden bg-[#E8E0D5] transition-all cursor-pointer border ${
+                  className={`w-20 h-20 rounded-2xl overflow-hidden bg-neutral-50 transition-all cursor-pointer border-2 p-1 ${
                     selectedImageIndex === idx
-                      ? 'border-[#24221F] ring-2 ring-[#24221F] opacity-100'
-                      : 'border-[#E2DBD0] opacity-60 hover:opacity-100'
+                      ? 'border-neutral-900 ring-2 ring-neutral-300 opacity-100 scale-105'
+                      : 'border-neutral-200 opacity-60 hover:opacity-100'
                   }`}
+                  aria-label={`View angle ${idx + 1}`}
                 >
                   <img
                     src={img}
                     alt={`${product.name} thumbnail ${idx + 1}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </button>
               ))}
@@ -206,83 +216,76 @@ export default function ProductDetail() {
           )}
         </div>
 
-        {/* Right: Product Architectural Information (Span 5) */}
+        {/* Right: Product Architectural Information */}
         <div className="lg:col-span-5 space-y-6">
           <div className="space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#A66A4C]">
-              {product.categoryName}
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
+              {product.brand || product.categoryName}
             </span>
-            <h1 className="text-3xl sm:text-5xl font-serif text-[#24221F] leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-neutral-900 leading-tight">
               {product.name}
             </h1>
-            <p className="text-2xl font-serif text-[#24221F] pt-1">
-              {formatCurrency(product.price)}
-            </p>
+            <div className="pt-2 flex items-baseline gap-3">
+              <span className="text-2xl sm:text-3xl font-black text-neutral-900">
+                {formatCurrency(product.price)}
+              </span>
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className="text-sm text-neutral-400 line-through">
+                  {formatCurrency(product.originalPrice)}
+                </span>
+              )}
+            </div>
           </div>
 
-          <p className="text-xs sm:text-sm text-[#77716A] leading-relaxed font-light">
+          <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
             {product.description}
           </p>
 
-          {/* Material & Dimensions Summary */}
-          <div className="border-y border-[#E2DBD0] py-4 space-y-2.5 text-xs">
+          {/* Key Specs Highlights */}
+          <div className="border-y border-neutral-200 py-4 space-y-2.5 text-xs">
             <div className="flex justify-between">
-              <span className="text-[#77716A]">Build Quality / Processor</span>
-              <span className="text-[#24221F] font-medium">{product.material || product.specs?.processor || product.brand || 'Flagship Grade'}</span>
+              <span className="text-neutral-500">Processor / Platform</span>
+              <span className="text-neutral-900 font-semibold">{product.specs?.processor || product.material || 'Enterprise Standard'}</span>
             </div>
-            {product.finish && (
+            {product.specs?.ram && (
               <div className="flex justify-between">
-                <span className="text-[#77716A]">Finish / Shade</span>
-                <span className="text-[#24221F] font-medium">{product.finish}</span>
+                <span className="text-neutral-500">System Memory</span>
+                <span className="text-neutral-900 font-semibold">{product.specs?.ram}</span>
               </div>
             )}
-            {product.dimensions && (
+            {product.specs?.storage && (
               <div className="flex justify-between">
-                <span className="text-[#77716A]">Dimensions</span>
-                <span className="text-[#24221F] font-medium">{product.dimensions}</span>
+                <span className="text-neutral-500">High-Speed Storage</span>
+                <span className="text-neutral-900 font-semibold">{product.specs?.storage}</span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-[#77716A]">Availability</span>
-              <span className="text-[#A66A4C] font-semibold">{product.inStock !== false ? 'In Stock (Ready to Ship)' : (product.availability || 'Out of Stock')}</span>
+              <span className="text-neutral-500">Stock Status</span>
+              <span className="text-emerald-600 font-bold flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>{product.inStock !== false ? 'In Stock (Ready to Dispatch)' : 'Pre-order Available'}</span>
+              </span>
             </div>
           </div>
 
-          {/* Key Design Highlights */}
-          {product.highlights && (
-            <div className="space-y-2">
-              <h4 className="text-[11px] font-semibold uppercase tracking-wider text-[#24221F]">
-                Design Highlights
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#77716A]">
-                {product.highlights.map((h, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#A66A4C] mt-1.5 shrink-0" />
-                    <span>{h}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {/* Actions: Quantity, Add to Cart & Direct Buy Now */}
-          <div className="space-y-3 pt-4">
+          <div className="space-y-3 pt-2">
             <div className="flex items-center gap-3">
-              <div className="flex items-center border border-[#E2DBD0] rounded-full bg-[#E8E0D5]/40 px-2 py-1">
+              <div className="flex items-center border border-neutral-300 rounded-full bg-neutral-50 px-2 py-1">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-1.5 text-[#77716A] hover:text-[#24221F]"
-                  aria-label="Decrease"
+                  className="p-1.5 text-neutral-600 hover:text-black cursor-pointer"
+                  aria-label="Decrease quantity"
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="px-3 text-xs font-semibold text-[#24221F] min-w-4 text-center">
+                <span className="px-3 text-xs font-bold text-neutral-900 min-w-4 text-center">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-1.5 text-[#77716A] hover:text-[#24221F]"
-                  aria-label="Increase"
+                  className="p-1.5 text-neutral-600 hover:text-black cursor-pointer"
+                  aria-label="Increase quantity"
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
@@ -290,7 +293,7 @@ export default function ProductDetail() {
 
               <button
                 onClick={handleAddToCart}
-                className="flex-1 py-3.5 px-6 rounded-full border border-[#24221F] text-[#24221F] hover:bg-[#24221F] hover:text-[#F4F0E8] text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                className="flex-1 py-3.5 px-6 rounded-full border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-xs"
               >
                 Add to Cart
               </button>
@@ -299,54 +302,59 @@ export default function ProductDetail() {
             {/* Direct Buy Now Button */}
             <button
               onClick={handleBuyNow}
-              className="w-full py-4 px-6 rounded-full bg-[#24221F] hover:bg-[#A66A4C] text-[#F4F0E8] text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-sm flex items-center justify-center gap-2"
+              className="w-full py-4 px-6 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-md flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]"
             >
               <span>Buy Now • {formatCurrency(product.price * quantity)}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="pt-2 flex items-center justify-between text-[11px] text-[#77716A]">
-            <span>{product.warranty}</span>
+          <div className="pt-2 flex items-center justify-between text-[11px] text-neutral-500">
+            <span>{product.warranty || '2 Years Official Warranty'}</span>
             <span>•</span>
-            <span>Secured Insured Shipping</span>
+            <span>GST Tax Invoice with Input Credit</span>
           </div>
         </div>
       </div>
 
       {/* Full Specifications Section */}
-      <div className="border-t border-[#E2DBD0] pt-12 space-y-6">
-        <h3 className="text-2xl sm:text-3xl font-serif text-[#24221F]">
-          Specifications & Build Quality
-        </h3>
-        <div className="divide-y divide-[#E2DBD0] border-y border-[#E2DBD0]">
-          {Object.entries(product.specs || {}).map(([specKey, specVal]) => (
-            <div key={specKey} className="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <span className="text-xs font-medium text-[#24221F]">{specKey}</span>
-              <span className="sm:col-span-2 text-xs text-[#77716A] leading-relaxed">
-                {specVal}
-              </span>
-            </div>
-          ))}
+      {product.specs && Object.keys(product.specs).length > 0 && (
+        <div className="border-t border-neutral-200 pt-12 space-y-6">
+          <h3 className="text-xl sm:text-2xl font-black text-neutral-900">
+            Technical Specifications & Details
+          </h3>
+          <div className="divide-y divide-neutral-200 border-y border-neutral-200 bg-neutral-50/50 rounded-2xl p-6">
+            {Object.entries(product.specs).map(([specKey, specVal]) => (
+              <div key={specKey} className="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <span className="text-xs font-bold text-neutral-900 uppercase tracking-wider">{specKey}</span>
+                <span className="sm:col-span-2 text-xs text-neutral-600 leading-relaxed font-mono">
+                  {specVal}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Related Product Recommendations */}
       {relatedProducts.length > 0 && (
-        <div className="space-y-8 pt-8 border-t border-[#E2DBD0]">
+        <div className="space-y-8 pt-8 border-t border-neutral-200">
           <div className="flex justify-between items-end">
-            <h3 className="text-2xl sm:text-3xl font-serif text-[#24221F]">
-              You May Also Like
-            </h3>
+            <div>
+              <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Similar Hardware</span>
+              <h3 className="text-xl sm:text-2xl font-black text-neutral-900">
+                You May Also Consider
+              </h3>
+            </div>
             <Link
               to="/products"
-              className="text-xs font-semibold uppercase tracking-wider text-[#A66A4C] hover:text-[#24221F]"
+              className="text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-blue-600"
             >
               View Full Collection →
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {relatedProducts.map((item) => (
               <ProductCard key={item.id} product={item} />
             ))}

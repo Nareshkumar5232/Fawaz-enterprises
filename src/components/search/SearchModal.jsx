@@ -36,7 +36,7 @@ export default function SearchModal() {
       try {
         const data = await productService.getProducts({ search: searchQuery });
         if (isMounted) {
-          setResults(data);
+          setResults(data || []);
           setLoading(false);
         }
       } catch {
@@ -79,7 +79,7 @@ export default function SearchModal() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={closeSearch}
-          className="fixed inset-0 bg-[#24221F]/60 backdrop-blur-xs"
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs"
         />
 
         {/* Modal Window */}
@@ -88,11 +88,11 @@ export default function SearchModal() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.97, y: -10 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-2xl bg-[#F4F0E8] rounded-3xl shadow-2xl border border-[#E2DBD0] overflow-hidden z-10 flex flex-col max-h-[80vh]"
+          className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden z-10 flex flex-col max-h-[80vh]"
         >
           {/* Header & Input */}
-          <div className="flex items-center px-6 py-5 border-b border-[#E2DBD0] gap-3">
-            <Search className="w-4 h-4 text-[#77716A] shrink-0" />
+          <div className="flex items-center px-6 py-5 border-b border-neutral-100 gap-3">
+            <Search className="w-4 h-4 text-neutral-400 shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -103,19 +103,19 @@ export default function SearchModal() {
                   handleViewAllResults();
                 }
               }}
-              placeholder="Search by product name, category, or specifications..."
-              className="flex-1 text-base sm:text-lg text-[#24221F] placeholder-[#9E9890] bg-transparent border-none outline-none font-serif"
+              placeholder="Search laptops, audio, monitors, components..."
+              className="flex-1 text-base sm:text-lg text-neutral-900 placeholder-neutral-400 bg-transparent border-none outline-none font-sans"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="p-1 text-[#77716A] hover:text-[#24221F] transition-colors"
+                className="p-1 text-neutral-400 hover:text-neutral-900 transition-colors"
                 title="Clear search"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
-            <kbd className="hidden sm:inline-flex items-center px-2 py-0.5 text-[10px] font-semibold text-[#77716A] bg-[#E8E0D5] rounded border border-[#E2DBD0]">
+            <kbd className="hidden sm:inline-flex items-center px-2 py-0.5 text-[10px] font-semibold text-neutral-500 bg-neutral-100 rounded border border-neutral-200">
               ESC
             </kbd>
           </div>
@@ -124,16 +124,16 @@ export default function SearchModal() {
           <div className="overflow-y-auto p-6 space-y-4 flex-1">
             {/* Categories when query is empty */}
             {!searchQuery.trim() && categories.length > 0 && (
-              <div className="space-y-2">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#77716A] block">
-                  Browse by Category
+              <div className="space-y-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">
+                  Popular Categories
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => handleApplyCategory(cat.slug)}
-                      className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#E8E0D5]/60 text-[#24221F] hover:bg-[#24221F] hover:text-white transition-colors cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-neutral-100 text-neutral-800 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
                     >
                       {cat.name}
                     </button>
@@ -144,50 +144,49 @@ export default function SearchModal() {
 
             {/* Loading state */}
             {loading && (
-              <div className="py-12 flex flex-col items-center justify-center text-[#77716A] space-y-2">
-                <p className="text-xs font-serif italic">Searching catalogue...</p>
+              <div className="py-12 flex flex-col items-center justify-center text-neutral-400 space-y-2">
+                <div className="w-5 h-5 border-2 border-neutral-900 border-t-transparent rounded-full animate-spin" />
+                <p className="text-xs">Searching Fawaz Enterprises catalog...</p>
               </div>
             )}
 
             {/* Results List */}
             {!loading && searchQuery.trim() !== '' && results.length > 0 && (
               <div className="space-y-2">
-                <p className="text-[10px] font-semibold text-[#77716A] uppercase tracking-[0.16em]">
-                  Matching Products ({results.length})
+                <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">
+                  Matching Hardware ({results.length})
                 </p>
                 {results.map((product) => (
                   <div
                     key={product.id}
-                    onClick={() => handleSelectProduct(product.slug)}
-                    className="flex items-center justify-between p-3 rounded-2xl hover:bg-[#E8E0D5]/60 cursor-pointer transition-all group"
+                    onClick={() => handleSelectProduct(product.slug || product.id)}
+                    className="flex items-center justify-between p-3 rounded-2xl hover:bg-neutral-50 border border-transparent hover:border-neutral-200/80 cursor-pointer transition-all group"
                   >
                     <div className="flex items-center gap-3.5">
-                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-white shrink-0">
-                        {product.images?.[0] ? (
+                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-neutral-100 shrink-0 p-1 flex items-center justify-center">
+                        {product.images?.[0] || product.image ? (
                           <img
-                            src={product.images[0]}
+                            src={product.images?.[0] || product.image}
                             alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full bg-[#E8E0D5] flex items-center justify-center text-[#77716A]">
-                            <Package className="w-5 h-5" />
-                          </div>
+                          <Package className="w-5 h-5 text-neutral-400" />
                         )}
                       </div>
                       <div>
-                        <h4 className="text-sm font-serif font-bold text-[#24221F] group-hover:text-[#A66A4C] transition-colors">
+                        <h4 className="text-sm font-bold text-neutral-900 group-hover:text-blue-600 transition-colors">
                           {product.name}
                         </h4>
-                        <span className="text-[11px] text-[#77716A]">{product.categoryName}</span>
+                        <span className="text-[11px] text-neutral-500">{product.categoryName || product.category}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3 text-right">
-                      <span className="text-xs font-serif font-bold text-[#24221F]">
+                      <span className="text-xs font-black text-neutral-900">
                         {formatCurrency(product.price)}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#9E9890] group-hover:text-[#24221F] group-hover:translate-x-0.5 transition-all" />
+                      <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all" />
                     </div>
                   </div>
                 ))}
@@ -197,9 +196,9 @@ export default function SearchModal() {
             {/* No Results */}
             {!loading && searchQuery.trim() !== '' && results.length === 0 && (
               <div className="py-12 text-center space-y-2">
-                <p className="text-base font-serif text-[#24221F]">No product items found</p>
-                <p className="text-xs text-[#77716A] max-w-xs mx-auto">
-                  We couldn’t find any matches for "{searchQuery}".
+                <p className="text-base font-bold text-neutral-900">No hardware found</p>
+                <p className="text-xs text-neutral-500 max-w-xs mx-auto">
+                  We couldn’t find any matches for "{searchQuery}". Try searching for laptops, keyboards, monitors, or audio.
                 </p>
               </div>
             )}

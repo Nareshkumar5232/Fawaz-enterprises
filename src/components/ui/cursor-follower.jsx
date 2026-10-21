@@ -109,10 +109,10 @@ export const CursorFollower = () => {
     >
       {/* INNER DOT */}
       <div
-        className="absolute rounded-full bg-[#A66A4C] shadow-[0_0_10px_rgba(166,106,76,0.25)]"
+        className="absolute rounded-full bg-neutral-900 shadow-[0_0_10px_rgba(0,0,0,0.2)]"
         style={{
-          width: "7px",
-          height: "7px",
+          width: "6px",
+          height: "6px",
           transform: "translate(-50%, -50%)",
           left: `${renderPos.dot.x}px`,
           top: `${renderPos.dot.y}px`,
@@ -122,14 +122,14 @@ export const CursorFollower = () => {
 
       {/* OUTER FOLLOWER */}
       <div
-        className="absolute rounded-full border border-[#A66A4C]"
+        className="absolute rounded-full border border-neutral-700/60"
         style={{
-          width: isHovering ? "46px" : "30px",
-          height: isHovering ? "46px" : "30px",
+          width: isHovering ? "46px" : "28px",
+          height: isHovering ? "46px" : "28px",
           transform: "translate(-50%, -50%)",
           left: `${renderPos.border.x}px`,
           top: `${renderPos.border.y}px`,
-          opacity: isHovering ? 0.9 : 0.55,
+          opacity: isHovering ? 0.8 : 0.4,
           transition:
             "width 0.35s cubic-bezier(0.22, 1, 0.36, 1), " +
             "height 0.35s cubic-bezier(0.22, 1, 0.36, 1), " +

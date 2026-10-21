@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
       const data = await authService.register({ name, email, phone, password });
       const newUser = data.user || data;
       setUser(newUser);
-      addToast(`Account created. Welcome to Bytecart, ${newUser.name}!`, 'success');
+      addToast(`Account created. Welcome to Fawaz Enterprises, ${newUser.name}!`, 'success');
       return newUser;
     } catch (err) {
       addToast(err.message || 'Registration failed', 'error');

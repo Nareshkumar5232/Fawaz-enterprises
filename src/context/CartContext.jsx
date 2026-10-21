@@ -77,7 +77,11 @@ export function CartProvider({ children }) {
 
   const applyPromoCode = (code) => {
     const clean = code.trim().toUpperCase();
-    if (clean === 'WELCOME10' || clean === 'BYTECART10') {
+    if (clean === 'TECHFAWAZ' || clean === 'FAWAZ15') {
+      setAppliedPromo({ code: clean, percentage: 15 });
+      addToast('Promo code applied: 15% discount on order.', 'success');
+      return true;
+    } else if (clean === 'WELCOME10' || clean === 'FAWAZ10' || clean === 'BYTECART10') {
       setAppliedPromo({ code: clean, percentage: 10 });
       addToast('Promo code applied: 10% discount on order.', 'success');
       return true;

@@ -57,8 +57,8 @@ export default function Profile() {
   if (authLoading || (!user && isAuthenticated)) {
     return (
       <div className="pt-36 pb-28 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 animate-pulse">
-        <div className="h-16 bg-[#E8E0D5] rounded-3xl" />
-        <div className="h-64 bg-[#E8E0D5] rounded-3xl" />
+        <div className="h-16 bg-neutral-100 rounded-3xl" />
+        <div className="h-64 bg-neutral-100 rounded-3xl" />
       </div>
     );
   }
@@ -66,27 +66,27 @@ export default function Profile() {
   return (
     <div className="pt-28 md:pt-36 pb-28 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
-      <div className="space-y-2 border-b border-[#E2DBD0] pb-6">
+      <div className="space-y-2 border-b border-neutral-200 pb-6">
         <Link
           to="/account"
-          className="text-xs font-semibold uppercase tracking-wider text-[#77716A] hover:text-[#24221F] inline-flex items-center gap-1 mb-2"
+          className="text-xs font-semibold uppercase tracking-wider text-neutral-500 hover:text-neutral-900 inline-flex items-center gap-1 mb-2 transition-colors"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
           <span>Back to Account</span>
         </Link>
-        <h1 className="text-3xl font-serif text-[#24221F] tracking-tight">
+        <h1 className="text-3xl font-serif text-neutral-900 tracking-tight">
           Personal Profile & Security
         </h1>
-        <p className="text-xs sm:text-sm text-[#77716A]">
+        <p className="text-xs sm:text-sm text-neutral-500">
           Manage your personal identification details and account credentials.
         </p>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-[#E8E0D5]/30 rounded-3xl p-8 sm:p-10 border border-[#E2DBD0] space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 sm:p-10 border border-neutral-200 space-y-6 shadow-xs">
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[#77716A] block">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 block">
               Full Name
             </label>
             <input
@@ -95,12 +95,12 @@ export default function Profile() {
               required
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-2xl bg-[#F4F0E8] border border-[#E2DBD0] text-xs text-[#24221F] focus:bg-white focus:outline-none focus:border-[#A66A4C]"
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:border-neutral-900 transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[#77716A] block">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 block">
               Email Address
             </label>
             <input
@@ -109,12 +109,12 @@ export default function Profile() {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-2xl bg-[#F4F0E8] border border-[#E2DBD0] text-xs text-[#24221F] focus:bg-white focus:outline-none focus:border-[#A66A4C]"
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:border-neutral-900 transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[#77716A] block">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 block">
               Contact Phone
             </label>
             <input
@@ -123,19 +123,19 @@ export default function Profile() {
               required
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-2xl bg-[#F4F0E8] border border-[#E2DBD0] text-xs text-[#24221F] focus:bg-white focus:outline-none focus:border-[#A66A4C]"
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:border-neutral-900 transition-all"
             />
           </div>
         </div>
 
         {/* Change Password Section */}
-        <div className="pt-6 border-t border-[#E2DBD0] space-y-4">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#A66A4C]">
+        <div className="pt-6 border-t border-neutral-100 space-y-4">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
             Update Security Password
           </span>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[#77716A] block">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500 block">
               New Password (Leave blank to keep unchanged)
             </label>
             <input
@@ -144,7 +144,7 @@ export default function Profile() {
               value={formData.newPassword}
               onChange={handleChange}
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-2xl bg-[#F4F0E8] border border-[#E2DBD0] text-xs text-[#24221F] focus:bg-white focus:outline-none focus:border-[#A66A4C]"
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:border-neutral-900 transition-all"
             />
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function Profile() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-4 px-6 rounded-full bg-[#24221F] hover:bg-[#A66A4C] active:scale-[0.99] disabled:opacity-50 text-[#F4F0E8] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+          className="w-full py-4 px-6 rounded-full bg-neutral-950 hover:bg-neutral-800 active:scale-[0.99] disabled:opacity-50 text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
         >
           {submitting ? (
             <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

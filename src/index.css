@@ -2,110 +2,148 @@
 
 @layer base {
   :root {
-    --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     
-    --bg-ivory: #F4F0E8;
-    --bg-beige: #E8E0D5;
-    --bg-cream: #FAF8F5;
-    --text-charcoal: #24221F;
-    --text-warm-gray: #77716A;
-    --text-light-gray: #9E9890;
-    --accent-terracotta: #A66A4C;
-    --accent-sandstone: #C08A6A;
-    --accent-terracotta-hover: #8C5539;
-    --accent-olive: #4A493D;
-    --border-warm: #E2DBD0;
+    --bg-main: #FFFFFF;
+    --bg-subtle: #F8F9FA;
+    --bg-card: #F4F4F6;
+    --bg-card-hover: #ECECF0;
+    --bg-dark: #0A0A0C;
+    --bg-dark-surface: #141418;
+    
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    
+    --accent-blue: #0284C7;
+    --accent-blue-hover: #0369A1;
+    --border-subtle: #E2E8F0;
+    --border-dark: #27272A;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #F4F0E8;
-    color: #24221F;
+    background-color: #FFFFFF;
+    color: #0F172A;
     overflow-x: hidden;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
-  h1, h2, h3, .font-serif, .serif-heading {
-    font-family: var(--font-serif);
-    letter-spacing: -0.02em;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
   }
 }
 
-/* Custom Editorial Utilities */
-.font-serif {
-  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-}
-
+/* Modern Minimalist Technology Utilities */
 .font-sans {
-  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
 }
 
-.bg-warm-ivory {
-  background-color: #F4F0E8;
+.font-heading {
+  font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, sans-serif;
 }
 
-.bg-soft-beige {
-  background-color: #E8E0D5;
+.bg-tech-white {
+  background-color: #FFFFFF;
 }
 
-.bg-deep-charcoal {
-  background-color: #24221F;
+.bg-tech-subtle {
+  background-color: #F8F9FA;
 }
 
-.text-deep-charcoal {
-  color: #24221F;
+.bg-tech-card {
+  background-color: #F4F4F6;
 }
 
-.text-warm-gray {
-  color: #77716A;
+.bg-tech-dark {
+  background-color: #0A0A0C;
 }
 
-.text-terracotta {
-  color: #A66A4C;
+.text-tech-primary {
+  color: #0F172A;
 }
 
-.text-sandstone {
-  color: #C08A6A;
+.text-tech-secondary {
+  color: #475569;
 }
 
-.border-warm {
-  border-color: #E2DBD0;
+.text-tech-muted {
+  color: #64748B;
 }
 
-/* Glass & Blur in warm neutral */
-.glass-warm {
-  background: rgba(244, 240, 232, 0.90);
+.text-tech-accent {
+  color: #0284C7;
+}
+
+.border-tech-subtle {
+  border-color: #E2E8F0;
+}
+
+/* Glass & Translucent Minimal Panels */
+.glass-header {
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
-.glass-dark-warm {
-  background: rgba(36, 34, 31, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.glass-dark {
+  background: rgba(10, 10, 12, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-/* Custom Scrollbar in warm stone */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4F0E8;
+  background: #FFFFFF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4CCC1;
-  border-radius: 3px;
+  background: #CBD5E1;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B8ADA0;
+  background: #94A3B8;
 }
 
-/* Smooth Image Scale Transitions */
-.editorial-img-hover {
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+/* Smooth Product Scale & Hover Transitions */
+.tech-hover-zoom {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
 }
-.editorial-img-hover:hover {
-  transform: scale(1.035);
+.tech-hover-zoom:hover {
+  transform: scale(1.04);
+}
+
+/* Hide scrollbar for clean category carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Badge Rotating Animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 18s linear infinite;
 }

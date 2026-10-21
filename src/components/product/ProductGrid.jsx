@@ -5,11 +5,11 @@ import { RotateCcw } from 'lucide-react';
 export function ProductSkeleton() {
   return (
     <div className="space-y-3 animate-pulse">
-      <div className="aspect-4/3 sm:aspect-5/4 bg-[#E8E0D5] rounded-2xl" />
+      <div className="aspect-4/3 sm:aspect-5/4 bg-neutral-100 rounded-2xl" />
       <div className="space-y-1.5 pt-1">
-        <div className="h-3 w-16 bg-[#E2DBD0] rounded" />
-        <div className="h-4 w-3/4 bg-[#E2DBD0] rounded" />
-        <div className="h-3 w-20 bg-[#E2DBD0] rounded" />
+        <div className="h-3 w-16 bg-neutral-200 rounded" />
+        <div className="h-4 w-3/4 bg-neutral-200 rounded" />
+        <div className="h-3 w-20 bg-neutral-200 rounded" />
       </div>
     </div>
   );
@@ -42,11 +42,11 @@ export default function ProductGrid({
   if (products.length === 0) {
     return (
       <div className="py-24 text-center max-w-md mx-auto space-y-4">
-        <h3 className="text-2xl font-serif text-[#24221F]">{emptyMessage}</h3>
+        <h3 className="text-2xl font-serif text-neutral-900">{emptyMessage}</h3>
         {handleResetAction && (
           <button
             onClick={handleResetAction}
-            className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#24221F] text-xs font-semibold uppercase tracking-wider text-[#24221F] hover:bg-[#24221F] hover:text-white transition-colors cursor-pointer"
+            className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-neutral-900 text-xs font-semibold uppercase tracking-wider text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Filters</span>
