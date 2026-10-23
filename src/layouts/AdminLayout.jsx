@@ -61,10 +61,12 @@ export default function AdminLayout() {
         {/* Brand Header */}
         <div>
           <div className="h-20 px-6 border-b border-[#3D3A36] flex items-center justify-between">
-            <Link to="/admin" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-sm">
-                F
-              </div>
+            <Link to="/admin" className="flex items-center gap-3 group">
+              <img
+                src="/logo-mark.png"
+                alt="Fawaz"
+                className="w-9 h-9 object-contain transition-transform duration-300 group-hover:scale-105"
+              />
               <div>
                 <span className="font-black text-base tracking-tight text-white uppercase">
                   FAWAZ
