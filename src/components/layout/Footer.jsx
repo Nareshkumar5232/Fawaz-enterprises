@@ -276,6 +276,16 @@ export default function Footer() {
                   </a>
                 </div>
               </li>
+
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-neutral-300 shrink-0 mt-0.5" />
+                <div>
+                  <span className="block text-[11px] text-neutral-500 uppercase tracking-wider">Registered Office</span>
+                  <p className="text-neutral-300 text-[11px] leading-relaxed mt-0.5">
+                    1st Floor, Flat No. 4, Senthamizh Kidil, North Kavari Street, West Mambalam, Chennai 600033
+                  </p>
+                </div>
+              </li>
             </ul>
 
             <div className="pt-2">

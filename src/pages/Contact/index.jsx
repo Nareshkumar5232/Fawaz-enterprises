@@ -141,6 +141,30 @@ export default function Contact() {
                 </div>
               </div>
 
+              {/* Registered Office Address */}
+              <div className="flex items-start gap-3.5">
+                <div className="p-2 rounded-xl bg-white border border-neutral-200 text-neutral-900 shrink-0 mt-0.5">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="font-bold text-neutral-900 block uppercase tracking-wider text-[11px]">
+                    Registered Office & Principal Place
+                  </span>
+                  <p className="mt-1 text-xs text-neutral-700 leading-relaxed">
+                    1st Floor, Flat No. 4, Senthamizh Kidil, No. 1, North Kavari Street, West Mambalam, Chennai, Tamil Nadu - 600033
+                  </p>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=North+Kavari+Street+West+Mambalam+Chennai+600033"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] text-blue-600 hover:text-blue-800 font-semibold mt-1"
+                  >
+                    <span>View on Google Maps</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
               {/* Statutory Tax Compliance */}
               <div className="flex items-start gap-3.5 pt-2 border-t border-neutral-200">
                 <div className="p-2 rounded-xl bg-white border border-neutral-200 text-neutral-900 shrink-0 mt-0.5">
